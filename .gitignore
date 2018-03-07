@@ -1,0 +1,34 @@
+node_modules
+/public/hot
+/public/storage
+/public/fonts
+/public/css
+/public/js
+/public/images
+/public/media
+/public/assets
+/public/build
+/public/mix-manifest.json
+/public/sitemap.xml
+/storage/*.key
+/vendor
+/.vagrant
+/composer.lock
+package-lock.json
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env
+
+# Ignore Mac OS X thumbnails
+.DS_Store
+
+# Not ingore keep file
+!.gitkeep
+
+# PHPStorm
+.idea
+
+#markup node_modules
+markup/node_modules

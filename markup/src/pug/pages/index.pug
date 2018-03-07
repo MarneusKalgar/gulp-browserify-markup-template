@@ -1,0 +1,18 @@
+extends ../_layouts/main
+
+//- Don't forget that you can use block/append/prepend on blocks
+//- Pass your variables through this block.
+block variables
+//-
+  - let title = 'index';
+  - let debug = true;
+
+//- Debug links. Add some.
+append debug_links
+  //- a(href='http://google.com') google, for example
+
+block header
+block body
+block footer
+
+//- Use block/append/prepend 'scripts' to override/add scripts

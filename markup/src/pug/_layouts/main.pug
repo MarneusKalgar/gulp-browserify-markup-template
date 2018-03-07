@@ -1,0 +1,18 @@
+include ../../../node_modules/bemto.pug/bemto
+
+block variables
+doctype html
+html(lang='ru')
+  head: include ../_partials/head
+  body
+    unless debug === false
+      include ../_partials/debug
+    div.all
+      div.all__header
+        block header
+      div.all__body
+        block body
+      div.all__footer
+        block footer
+    include ../_partials/popups
+    include ../_partials/scripts

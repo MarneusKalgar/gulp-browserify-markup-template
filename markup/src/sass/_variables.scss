@@ -1,0 +1,23 @@
+$color-text: #000;
+$color-note: #8d949f;
+$bg-button: #007cc2;
+
+$thin: 100;
+$extra-light: 200;
+$light: 300;
+$normal: 400;
+$medium: 500;
+$semi-bold: 600;
+$bold: 700;
+$extra-bold: 800;
+$black: 900;
+
+$font-default: Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
+
+// Media
+$phone-width: 320px;
+$tablet-width: 768px;
+$desktop-width: 1025px;
+
+// Bourbon
+$em-base: 16px; // Sets global base em size for the px-to-em and px-to-rem function. This should be the same size as your body font-size. Setting default is 16px.
