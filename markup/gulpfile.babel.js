@@ -1,5 +1,3 @@
-'use strict';
-
 import glob from 'glob';
 import path from 'path';
 import gulp from 'gulp';
@@ -7,7 +5,7 @@ import del from 'del';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 
-//browserify & support plugs
+// browserify & support plugs
 import babelify from 'babelify';
 import browserify from 'browserify';
 import source from 'vinyl-source-stream';
@@ -20,22 +18,10 @@ const $css = gulpLoadPlugins({
 });
 
 const AUTOPREFIXER_BROWSERS = ['last 2 versions', 'ie >= 9', 'Android >= 30'];
-// google version
-// const AUTOPREFIXER_BROWSERS = [
-//   'ie >= 10',
-//   'ie_mob >= 10',
-//   'ff >= 30',
-//   'chrome >= 34',
-//   'safari >= 7',
-//   'opera >= 23',
-//   'ios >= 7',
-//   'android >= 4.4',
-//   'bb >= 10'
-// ];
 const POSTCSS_PROCESSORS = [
-  $css.cssnext({browsers: AUTOPREFIXER_BROWSERS})//,
+  $css.cssnext({ browsers: AUTOPREFIXER_BROWSERS }) // ,
   // $css.autoprefixer(AUTOPREFIXER_BROWSERS),
-  //$css.cssnano() // uncomment, if you want CSS minification
+  // $css.cssnano() // uncomment, if you want CSS minification
 ];
 
 const PATH = {
@@ -58,30 +44,29 @@ const PATH = {
     js: 'src/js/**/*',
     styles: 'src/sass/**/*',
     img: 'src/img/**/*',
-    pic: 'src/pic/**/*',
     fonts: 'src/fonts/**/*'
   },
   clean: 'build/*'
 };
 
 const BROWSERSYNC_CONFIG = {
-  server: ["build"],
+  server: ['build'],
   notify: false,
   open: false,
   tunnel: false,
-  host: "markup",
+  host: 'markup',
   port: 9000,
-  logPrefix: "browserSync"
+  logPrefix: 'browserSync'
 };
 
-gulp.task('lint', () =>
+gulp.task('lint', () => {
   gulp.src(PATH.watch.js)
     .pipe($.eslint())
     .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failOnError()))
-);
+    .pipe($.if(!browserSync.active, $.eslint.failOnError()));
+});
 
-gulp.task('clean:build', () => del(PATH.clean, {dot: true}));
+gulp.task('clean:build', () => del(PATH.clean, { dot: true }));
 gulp.task('clean:cache', cb => $.cache.clearAll(cb));
 
 gulp.task('serve', () => browserSync(BROWSERSYNC_CONFIG));
@@ -117,13 +102,13 @@ gulp.task('build:html', () => {
         }).map(filename => path.parse(filename).name)
       }
     })))
-    .pipe($.changed(PATH.build.html, {hasChanged: $.changed.compareSha1Digest}))
-    .pipe($.if(!browserSync.active, $.size({title: 'html', showFiles: true})))
-  .pipe(gulp.dest(PATH.build.html))
-  .pipe(browserSync.stream());
+    .pipe($.changed(PATH.build.html, { hasChanged: $.changed.compareSha1Digest }))
+    .pipe($.if(!browserSync.active, $.size({ title: 'html', showFiles: true })))
+    .pipe(gulp.dest(PATH.build.html))
+    .pipe(browserSync.stream());
 });
 
-/*gulp.task('build:js:vendor', () => {
+/* gulp.task('build:js:vendor', () => {
   const b = browserify({
     entries: PATH.src.js.vendor,
     debug: true
@@ -138,11 +123,11 @@ gulp.task('build:html', () => {
     .pipe($.uglify())
     .pipe(gulp.dest(PATH.build.js.vendor))
     .pipe(browserSync.stream());
-});*/
+}); */
 
 gulp.task('build:js', ['lint'], () => {
   browserify(PATH.src.js)
-    .transform(babelify, {presets: ["env"]})
+    .transform(babelify, { presets: ['env'] })
     .bundle()
     .pipe($.plumber())
     .pipe(source('app.js'))
@@ -156,37 +141,37 @@ gulp.task('build:js', ['lint'], () => {
 gulp.task('build:styles', () => {
   gulp.src(PATH.src.styles)
     .pipe($.plumber())
-    .pipe($.if('*.{sass,scss}', $.sass({outputStyle: 'expanded'}).on('error', $.sass.logError)))
+    .pipe($.if('*.{sass,scss}', $.sass({ outputStyle: 'expanded' }).on('error', $.sass.logError)))
     .pipe($.sourcemaps.init())
-      .pipe($.if('*.css', $.postcss(POSTCSS_PROCESSORS)))
+    .pipe($.if('*.css', $.postcss(POSTCSS_PROCESSORS)))
     .pipe($.sourcemaps.write('./'))
-    .pipe($.changed(PATH.build.styles, {hasChanged: $.changed.compareSha1Digest}))
-    .pipe($.if(!browserSync.active, $.size({title: 'styles'})))
-  .pipe(gulp.dest(PATH.build.styles))
-  .pipe(browserSync.stream({match: '**/*.css'}));
+    .pipe($.changed(PATH.build.styles, { hasChanged: $.changed.compareSha1Digest }))
+    .pipe($.if(!browserSync.active, $.size({ title: 'styles' })))
+    .pipe(gulp.dest(PATH.build.styles))
+    .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
 gulp.task('build:img', () => {
   gulp.src(PATH.src.img)
-    .pipe($.changed(PATH.build.img, {hasChanged: $.changed.compareSha1Digest}))
+    .pipe($.changed(PATH.build.img, { hasChanged: $.changed.compareSha1Digest }))
     // .pipe($.cache($.imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
     .pipe($.cache($.imagemin()))
-    .pipe($.size({title: 'img', showFiles: true}))
-  .pipe(gulp.dest(PATH.build.img));
+    .pipe($.size({ title: 'img', showFiles: true }))
+    .pipe(gulp.dest(PATH.build.img));
 });
 
-/*gulp.task('build:pic', () => {
+/* gulp.task('build:pic', () => {
   gulp.src(PATH.src.pic)
     .pipe($.changed(PATH.build.pic, {hasChanged: $.changed.compareSha1Digest}))
     .pipe($.size({title: 'pic', showFiles: true}))
   .pipe(gulp.dest(PATH.build.pic));
-});*/
+}); */
 
 gulp.task('build:fonts', () => {
   gulp.src(PATH.src.fonts)
-    .pipe($.changed(PATH.build.fonts, {hasChanged: $.changed.compareSha1Digest}))
-    .pipe($.size({title: 'fonts', showFiles: true}))
-  .pipe(gulp.dest(PATH.build.fonts));
+    .pipe($.changed(PATH.build.fonts, { hasChanged: $.changed.compareSha1Digest }))
+    .pipe($.size({ title: 'fonts', showFiles: true }))
+    .pipe(gulp.dest(PATH.build.fonts));
 });
 
 // gulp.task('build:prepare', ['build:vendor']);
@@ -194,12 +179,12 @@ gulp.task('build:fonts', () => {
 // gulp.task('build:js', [/*'build:js:vendor',*/ 'build:js:app']);
 
 gulp.task('build', [
-  /*'build:prepare',*/
+  /* 'build:prepare', */
   'build:html',
   'build:js',
   'build:styles',
   'build:fonts',
-  'build:img'/*,
+  'build:img'/* ,
   'build:pic'*/
 ]);
 
@@ -211,10 +196,10 @@ gulp.task('clean', [
 gulp.task('watch', () => {
   gulp.watch(PATH.watch.html, ['build:html']);
   gulp.watch(PATH.watch.styles, ['build:styles']);
-  /*gulp.watch(PATH.watch.js.vendor, ['build:js:vendor']);*/
+  /* gulp.watch(PATH.watch.js.vendor, ['build:js:vendor']); */
   gulp.watch(PATH.watch.js.app, ['build:js:app']);
   gulp.watch(PATH.watch.img, ['build:img']);
-  /*gulp.watch(PATH.watch.pic, ['build:pic']);*/
+  /* gulp.watch(PATH.watch.pic, ['build:pic']); */
   gulp.watch(PATH.watch.fonts, ['build:fonts']);
 });
 

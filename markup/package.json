@@ -6,8 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "gulp --gulpfile gulpfile.babel.js default",
-    "gulp": "gulp --gulpfile gulpfile.babel.js"
+    "start": "gulp --gulpfile gulpfile.babel.js default"
   },
   "devDependencies": {
     "@babel/register": "^7.0.0-beta.40",
